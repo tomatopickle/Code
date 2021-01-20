@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
+      <meta name="google-signin-client_id" content="183510453146-7p8gob4b5rre44j33n5dvrr1f9c9bkcq.apps.googleusercontent.com">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <link rel="stylesheet" href="style.css">
+      <link rel="shortcut icon" href="https://code.abaanshanid.repl.co/assets/favicon.ico" sizes="512*512" type="image/x-icon">
+      <script src="script.js" defer></script>
+      <title>Code | Home</title>
+   </head>
+   <body>
+     <nav >
+      
+    <div class="nav-wrapper">
+      <!--<a  class="brand-logo  left"><h2>Code</h2></a>-->
+        <img class="left logo" src="https://code.abaanshanid.repl.co/assets/favicon.ico" alt="Code"> 
+  <div class="switch" style="float:right;" oninput="toggleDarkMode()">
+    <label>
+      Dark mode
+      <input id="darkModeToggle" checked="true" autocomplete="false" autocomplete="false" type="checkbox">
+      <span class="lever"></span>
+      
+    </label>
+  </div>
+      <div class="right">
+
+         <a style="margin-right:25px;"   href="https://code.abaanshanid.repl.co" class="btn light-blue  waves-effect waves-light blue darken-4">Make new snippet</a>
+      </div>
+    </div>
+  </nav>
+  <a class="btn-floating btn-large modal-trigger waves-effect waves-light tooltipped" href="#edit" data-position = "left" data-tooltip="Edit profile" id="fab"><i style="color:var(--text-color);" class="material-icons">edit</i></a>
+     <img class="circle avtr" src="https://code.abaanshanid.repl.co/assets/avtr.svg">
+     <h3></h3>
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#data">All snippets</a></li>
+        <li class="tab col s3"><a href="#starred">Starred</a></li>
+      </ul>
+      <div id="data">
+
+    <div class="preloader-wrapper big active">
+      <div class="spinner-layer spinner-blue">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+      </div>
+      </div>
+      <div id="starred">
+        Starred come here
+          </div>
+          <br>
+          <br>
+          <br>
+        
+   <div id="edit" class="modal">
+    <div class="modal-content">
+      <h4>Edit profile</h4>
+      <img id="editAvtr" class="circle avtr" src="https://code.abaanshanid.repl.co/assets/avtr.svg">
+        <div class="input-field">
+           <i class="material-icons prefix">edit</i>
+          <input id="editNameInp"  type="text" class="validate" oninput="document.querySelector('#saveEditBtn').classList.remove('disabled')">
+          <label for="editNameInp">User Name</label>
+        </div>
+        <div class="input-field">
+           <i class="material-icons prefix">edit</i>
+          <input id="imgInp" oninput="addAvtr()" type="text" class="validate" oninput="document.querySelector('#saveEditBtn').classList.remove('disabled')">
+          <label for="imgInp">Enter an image URL</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button onclick="submitEdit()" id="saveEditBtn"  class="modal-close waves-effect waves-light btn disabled indigo darken-3">Save changes</button>
+      <a  class="modal-close waves-effect waves-light btn-flat" style="color:var(--text-color)">Cancel</a>
+    </div>
+  </div>
+   </body>
+</html>

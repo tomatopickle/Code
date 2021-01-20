@@ -1,0 +1,225 @@
+ @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+ :root{
+   --primary-color : #272f44;
+   --secondary-color : #1d2333;
+   --text-color : #ffff;
+ }
+ body.light{
+  --primary-color : rgb(250, 250, 250);
+  --secondary-color : rgb(228, 228, 228);
+  --text-color : #272f44;
+ }
+ .editor { 
+  height: 95vh !important;
+  font-family: 'JetBrains Mono', monospace;
+  width: 100% !important;
+  }
+#console{
+  background-color: var(--primary-color);
+  height: 100%;
+  width: 100%;
+}
+html,body{
+  background-color: var(--secondary-color);
+  height: 100vh;
+}
+
+.tabs{
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  font-weight: 600;
+}
+.tabs .tab a{
+  color: var(--text-color) !important;
+  font-weight: 600;
+  opacity: 0.75;
+}
+.tabs .indicator{
+  background-color: var(--text-color) !important;
+}
+.tabs .tab a:focus, .tabs .tab a:focus.active{
+  background-color: var(--primary-color) !important;
+  opacity: 1;
+}
+.tabs .tab a.active{
+  opacity: 1;
+ } 
+#pre{
+  background-color: var(--text-color);
+}
+#left{
+  overflow : hidden;
+}
+.split, .gutter.gutter-horizontal {
+    float: left;
+}
+.split {
+     -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     box-sizing: border-box;
+     overflow-y: auto;
+     overflow-x: hidden;
+     display: flex;
+     flex-direction: column;
+ }
+ 
+ 
+ .gutter.gutter-horizontal {
+     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='30'><path d='M2 0 v30 M5 0 v30 M8 0 v30' fill='none' stroke='grey'/></svg>");
+     background-repeat: no-repeat;
+    background-position: center;
+ }
+ .gutter.gutter-vertical {
+     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='30'><path d='M2 0 v30 M5 0 v30 M8 0 v30' fill='none' stroke='grey'/></svg>");
+     background-repeat: no-repeat;
+    background-position: center;
+ }
+ .split.split-horizontal,
+ .gutter.gutter-horizontal {
+     height: 90vh;
+     float: left;
+     background-color: #4c515e;
+ }
+ .split.split-vertical,
+ .gutter.gutter-vertical {
+   width:100%;
+     background-color: #4c515e;
+ }
+ iframe{
+   width: 100%;
+   height: 100%;
+ }
+nav{
+  background: var(--primary-color) !important;;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+}
+.toastStart{
+    background-color: rgb(66, 66, 66);
+    color: var(--text-color);
+    border-radius: 5px;
+    position: fixed;
+    padding: 5px;
+    font-size: 15px;
+    bottom : -50px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    animation: up 15s;
+    transition: all 1s;
+}
+@keyframes up{
+    15% {
+        bottom: 5px;
+    }
+}
+.abcRioButton{
+ background-color:transparent !important;
+ text-transform: none !important;
+ box-shadow: none !important;
+ color: var(--text-color) !important;
+}
+#toast-container {
+  top: auto !important;
+  right: auto !important;
+  bottom: 10%;
+  left:2%;
+}
+ .input-field input[type=text] label {
+     color: var(--text-color) !important;
+}
+ .input-field input[type=text]:focus {
+  border-bottom: 1px solid var(--text-color) !important;
+  box-shadow: 0 1px 0 0 var(--text-color) !important;
+  color: var(--text-color) !important;
+}
+ .input-field input[type=text] .prefix.active{
+  font-size: 20px !important;
+  color: var(--text-color) !important;
+}
+ .input-field input[type=text]{
+  color: var(--text-color) !important;
+}
+ .input-field input[type=text] {
+  border-bottom: 1px solid rgb(182, 182, 182) !important;
+  box-shadow: 0 1px 0 0 rgb(182, 182, 182) !important;
+}
+.info{
+  color: var(--text-color);
+  background-color: var(--primary-color) !important;
+}
+.err{
+  color: rgb(85, 0, 0);
+  background-color: rgb(235, 98, 98) !important;
+}
+.modal{
+  color: var(--text-color);
+  background-color: var(--primary-color) !important;
+}
+.modal-footer{
+  color: var(--text-color);
+  background-color: var(--primary-color) !important;
+}
+.collapsible-header{
+  color: var(--text-color);
+  background-color: var(--primary-color) !important;
+}
+.collection-item{
+  color: var(--text-color);
+  background-color: var(--primary-color) !important;
+}
+.frameOpts{
+  background-color: var(--secondary-color);
+  color: var(--text-color) !important;
+  height: 25px;
+  width: 100%;
+  display: none;
+}
+.consoleClear{
+  background-color: var(--secondary-color);
+  color: white !important;
+  height: 25px;
+  width: 100%;
+  position: sticky;
+  top: 0;
+}
+#link {
+	align-self: center;
+	outline: currentcolor none medium;
+	border: 1px solid var(--primary-color);
+	background-color: transparent;
+	padding: 2px 4px;
+	color: var(--text-color);
+	font-size: 13px;
+	-moz-box-flex: 1;
+	flex-grow: 1;
+	border-radius: 5px;
+}
+
+.consoleClear .btn-small{
+height: 25px !important;
+line-height: 0px;
+font-size: 13px;
+width: 100%;
+}
+.langLogo{
+width: 20px;
+height: 20px;
+position: relative;
+top: 5px;
+right: 5px;
+}
+.modal .input-field{
+  margin: 0 !important;
+  color: var(--text-color) !important;
+}
+#fontSizeInp{
+  color: var(--text-color) !important;
+}
+.btn{
+  border-radius: 5px  !important;
+}
+input:not([type]):focus:not([readonly]) + label, input[type="text"]:not(.browser-default):focus:not([readonly]) + label, input[type="password"]:not(.browser-default):focus:not([readonly]) + label, input[type="email"]:not(.browser-default):focus:not([readonly]) + label, input[type="url"]:not(.browser-default):focus:not([readonly]) + label, input[type="time"]:not(.browser-default):focus:not([readonly]) + label, input[type="date"]:not(.browser-default):focus:not([readonly]) + label, input[type="datetime"]:not(.browser-default):focus:not([readonly]) + label, input[type="datetime-local"]:not(.browser-default):focus:not([readonly]) + label, input[type="tel"]:not(.browser-default):focus:not([readonly]) + label, input[type="number"]:not(.browser-default):focus:not([readonly]) + label, input[type="search"]:not(.browser-default):focus:not([readonly]) + label, textarea.materialize-textarea:focus:not([readonly]) + label{
+  color: var(--text-color) !important;
+}

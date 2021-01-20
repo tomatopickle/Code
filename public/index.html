@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://apis.google.com/js/platform.js" async defer>
+
+	</script>
+	<meta name="google-signin-client_id" content="183510453146-7p8gob4b5rre44j33n5dvrr1f9c9bkcq.apps.googleusercontent.com">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+
+	</script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.2.0/split.min.js">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+
+	</script>
+	<link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.21.2/min/vs/editor/editor.main.css">
+	<link rel="stylesheet" href="style.css">
+	<script>
+		var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.21.2/min/vs' } };
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.21.2/min/vs/loader.js">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.21.2/min/vs/editor/editor.main.nls.js">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.21.2/min/vs/editor/editor.main.js">
+
+	</script>
+	<script src="script.js" defer>
+
+	</script>
+	<title>Code Editor</title>
+  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+</head>
+
+<body onkeydown="handleKeyUp(event)">
+	<nav class="nav-extended">
+		<div class="nav-wrapper">
+			<div style="width:25%;margin-left:5px" class="input-field left">
+				<input id="fileName" type="text" class="validate" placeholder="Untitled">
+         <label for="fileName">Title</label>
+      </div>
+      <div   class="right">
+        <a class="waves-effect waves-light blue btn modal-trigger" href="#settings">Settings</a>
+        <a class="waves-effect waves-light purple darken-3 btn modal-trigger" href="#libSearch">Add libraries</a>
+       <button  onclick="save()" id="saveBtn" class="waves-effect disabled  waves-light btn green accent-4 tooltipped" data-position="bottom" data-tooltip="Login to save">Save</button>
+       <button onclick="addUp()"  data-position="bottom" data-tooltip="Ctrl + R" class="waves-effect waves-light btn  blue darken-1 tooltipped ">Run</button>
+       <a style="color:white" href="https://code.abaanshanid.repl.co/home/" class="waves-effect waves-light btn-flat blue-grey darken-4">Home</a>
+       <div class="g-signin2 btn" style="background-color:transparent !important;text-transform: none !important;" data-onsuccess="onSignIn"></div>
+      </div>
+    </div>
+  </nav>
+       <div class="split-parent">
+      <div class="split split-horizontal" id="left"  class="row codeContainer  left">
+         <div class="col s12">
+            <ul  class="tabs">
+               <li class="tab col s3"><a onclick="setTimeout(function(){html.focus()},500) " class="active" href="#html"><img class="langLogo" src="/assets/html-dark.png">HTML</a></li>
+               <li class="tab col s3" id="script"><a  onclick="setTimeout(function(){js.focus()},500) " href="#js"><img class="langLogo"  src="/assets/js-dark.png"><span id="lang">Js</span></a></li>
+               <li class="tab col s3"><a onclick="setTimeout(function(){css.focus()},500) "href="#css"><img class=" langLogo" src="/assets/css-dark.png">CSS</a></li>
+            </ul>
+         </div>
+         <div id="html" class="col s12">
+            <div oninput="editorInpt()" class="editor" id="htmlEditor">
+            </div>
+         </div>
+         <div id="js" class="col s12">
+            <div oninput="editorInpt()" class="editor" id="jsEditor">
+            </div>
+         </div>
+         <div id="css" class="col s12">
+            <div oninput="editorInpt()"  class="editor" id="cssEditor">
+            </div>
+         </div>
+      </div>
+  <div id="right" class="split right">
+    <div class="split split-horizontal">
+    <div id="prePrnt" class="split content">
+      <div class="frameOpts">
+        <span  id="link"></span>
+        <a target="about:blank" style="color:var(--text-color) !important;" data-position="left" data-tooltip="Open snippet in new tab" class="material-icons  tooltipped  waves-effect waves-light right" id="linkHref" >launch</a>
+      </div>
+    <iframe id="pre" frameborder="0"></iframe>
+     </div>
+    <div id="preConsole" class="split content">
+        <div class="consoleClear">
+        <button onclick="$('#console').html('')" class=" waves-effect waves-light right btn-small grey darken-3" >Clear console</button>
+      </div>
+     <div id="console"></div>
+    </div>
+    </div>
+  </div>
+  </div>
+  <div id="libSearch" class="modal">
+    <div class="modal-content">
+        <h4>Add libraries</h4>
+        <div class="input-field col s6">
+          <input placeholder="Search a library" oninput="getLibs(this.value)"id="first_name" type="text" class="validate">
+        </div>
+        <ul id="libs" class="collapsible">
+
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn green">Done</a>
+    </div>
+</div>
+  <div id="settings" class="modal">
+    <div class="modal-content">
+        <h4>Settings</h4>
+            <ul class="collection">
+               <li class="collection-item">
+        <span>Dark mode</span>
+     <div class="switch right">
+     <label>   
+        <input oninput="toggleDarkMode(this.checked)" id="darkModeToggle" type="checkbox" checked="false">
+        <span class="lever"></span> 
+     </label>
+     </li>
+     <li class="collection-item">
+        <span>Auto run</span>
+     <div class="switch right">
+     <label>   
+        <input id="autoRunToggle" oninput="toggleAutoRun()" type="checkbox">
+        <span class="lever"></span> 
+     </label>
+     </li>
+     <li class="collection-item">
+        <span>Minimap</span>
+     <div class="switch right">
+     <label>   
+        <input id="minimapToggle" oninput="toggleMinimap()" type="checkbox">
+        <span class="lever"></span> 
+     </label>
+     </li>
+     <li class="collection-item">
+        <span>Use <a href="https://brython.info" target="about:blank">Brython</a></span>
+     <div class="switch right">
+     <label>   
+        <input checked="false" aria-checked="false" aria-checked="false"  id="brythonToggle" oninput="toggleBrython()" type="checkbox">
+        <span class="lever"></span> 
+     </label>
+     </li>
+     <li class="collection-item">
+        <span>Auto clear console</span>
+     <div class="switch right">
+     <label>   
+        <input id="autoClearConsoleToggle" oninput="toggleAutoClearConsole()" type="checkbox">
+        <span class="lever"></span> 
+     </label>
+     </li>
+      <li class="collection-item">
+        <span>Font size (pixels)</span>
+     <div class="right input-field col s6">
+      <input value="14" oninput="updateFontSize(event.target.value)" min="0" id="fontSizeInp" type="number">
+        <label for="fontSizeInp">Font-size</label>
+     </div>
+     </li>
+</div>      
+     <small class="right" style="margin-right:5px">Some changes might require reloading to be applied.</small>
+     <br>
+    <div class="modal-footer">
+        <a  class="modal-close waves-effect waves-light btn-flat" style="color:var(--text-color)">Close</a>
+    </div>
+</div>
+   </body>
+</html>
