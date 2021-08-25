@@ -13,6 +13,8 @@
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "gatekeeper": "0.0.4",
+    "nativefier": "^43.0.1",
+    "neu": "0.0.0",
     "random-string": "^0.2.0"
   }
 }

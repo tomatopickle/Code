@@ -1,0 +1,92 @@
+
+  <style>.box_resize1{
+  width: 100%;
+  max-width: 300px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.14);
+  margin: 8px;
+  display: inline-block;
+  background-color: #fafafa;
+  padding: 5px;
+  border-radius: 5px;
+  position: relative;
+}
+.box_resize1 img{
+  position: absolute;
+  top: 5px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  left: 50%;
+  right: 50%;
+}
+.body{
+  all : initial;
+  width : 100vw;
+}
+html,body{
+  background-color: #e4e4e4 !important;
+}
+.box_resize1 .table {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+#box-table-a {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: left;
+	border-collapse: collapse;
+	width: 100%;
+}</style><script defer>document.body.onload = function () {
+  var iframe = document.querySelectorAll("frame")[2];
+  var doc = iframe.contentWindow.document;
+  var css = doc.createElement('style');
+  css.innerHTML = `
+.box_resize1{
+  width: 100%;
+  max-width: 300px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.14);
+  margin: 8px;
+  display: inline-block;
+  background-color: #fafafa;
+  padding: 5px;
+  border-radius: 5px;
+  position: relative;
+}
+.box_resize1 img{
+  position: absolute;
+  top: 5px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  left: 50%;
+  right: 50%;
+}
+.body{
+  all : initial;
+  width : 100vw;
+}
+html,body{
+  background-color: #e4e4e4 !important;
+}
+.box_resize1 .table {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+#box-table-a {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: left;
+	border-collapse: collapse;
+	width: 100%;
+}
+`
+  document.body.style.backgroundColor = "#e4e4e4"
+  doc.body.style.backgroundColor = "#e4e4e4"
+  doc.body.appendChild(css);
+  alert("Script excuted");
+}</script>
+  

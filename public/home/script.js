@@ -1,4 +1,7 @@
 var json =JSON.parse(localStorage.getItem("acc"));
+if(!json){
+ location.replace("https://code.abaanshanid.repl.co");
+}
 //intializing all Materilaize CSS stuff
 M.Tabs.init(document.querySelector(".tabs"));
 M.AutoInit();

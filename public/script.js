@@ -7,15 +7,19 @@ var minimap = false;
 var autoClearConsole = false;
 var fileOwned = false;
 var lang = "js";
-//html.updateOptions({"fontSize":"50px"})
-if (localStorage.getItem("backUp")) {
+var backupEnabled = true;
+if (localStorage.getItem("backupEnabled") == "false") {
+    backupEnabled = false;
+    document.querySelector("#autoRunToggle").checked = true;
+}
+if (localStorage.getItem("backUp") && backupEnabled == true) {
     var backUp = JSON.parse(localStorage.getItem("backUp"));
 }
 var file = location.search.replace("?", "");
 
 setTimeout(function() {
-    html.focus()
-}, 500)
+    html.focus();
+}, 500);
 
 function getBlobURL(code, type) {
     const blob = new Blob([code], {
@@ -34,8 +38,10 @@ html = monaco.editor.create(document.getElementById('htmlEditor'), {
     formatOnInput: true,
     minimap: {
         enabled: false
-    }
+    },
+    languages : "html"
 });
+emmetMonaco.emmetHTML(monaco);
 css = monaco.editor.create(document.getElementById('cssEditor'), {
     value: "/*CSS here*/",
     language: 'css',
@@ -47,7 +53,8 @@ css = monaco.editor.create(document.getElementById('cssEditor'), {
     formatOnInput: true,
     minimap: {
         enabled: false
-    }
+    },
+    languages : "css"
 });
 js = monaco.editor.create(document.getElementById('jsEditor'), {
     value: "//javascript here",
@@ -62,7 +69,6 @@ js = monaco.editor.create(document.getElementById('jsEditor'), {
         enabled: false
     }
 });
-//indentSize
 var fontSize = localStorage.getItem("fontSize");
 fontSize = fontSize ? fontSize : "14px";
 html.updateOptions({
@@ -137,11 +143,13 @@ function addUp() {
     if (autoClearConsole) {
         $('#console').html('');
     }
+    var code;
     var htmlCode = html.getValue();
     var cssCode = css.getValue();
     var jsCode = js.getValue();
     if (lang != "python") {
-        htmlCode += `
+        code = `
+<html>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
   <script>
 var log = console.log;
@@ -150,16 +158,19 @@ console.log = function (m) {
     window.parent.document.getElementById('console').innerHTML +=  "<div class='info'>"+m+"</div><hr>"; 
 }
 </script>
-  <style>${cssCode}</style><script defer>
+  <style>${cssCode}</style>
+  ${htmlCode}
+  <script defer>
   try{
   ${jsCode}
   }catch(err){
     window.parent.document.getElementById('console').innerHTML +=  "<div class='err'>"+err+"</div><hr>";
   }
   </script>
+  </html>
   `;
     } else {
-        htmlCode += `
+        code += `
   <html>
   <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
@@ -181,12 +192,13 @@ console.warn = function (m) {
 }
 </script>
   <style>${cssCode}</style>
+  ${htmlCode}
   <script defer  type="text/python">${jsCode}</script>
   </body>
   </html>
   `;
     }
-    document.getElementById("pre").src = getBlobURL(htmlCode);
+    document.getElementById("pre").src = getBlobURL(code);
     if (!autoRun) {
         M.toast({
             html: '<span>Code executed</span> <button style="color:white !important" onclick="M.Toast.dismissAll();" class="btn-flat toast-action">  <i class="material-icons">close</i></button>',
@@ -195,7 +207,7 @@ console.warn = function (m) {
     }
 
 };
-document.getElementById("pre").src = getBlobURL(`Click the run button or press Ctrl+S to execute code. Make sure to add the <html> tag in the beginning`);
+document.getElementById("pre").src = getBlobURL(`Click the run button or press Ctrl+S to execute code. Happy Coding!`);
 Split(['#left', '#right'], {
     sizes: [70, 30],
 });
@@ -252,16 +264,15 @@ window.addEventListener("unload", function() {
 });
 
 function save() {
+   var code;
     var htmlCode = html.getValue();
     var cssCode = css.getValue();
     var jsCode = js.getValue();
     if (lang != "python") {
-        htmlCode += `
-
-  <style>${cssCode}</style><script defer>${jsCode}</script>
-  `;
+        code = `
+        ${htmlCode}<style>${cssCode}</style><script defer>${jsCode}</script>`;
     } else {
-        `<html>
+  code = `<html>
   <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.1/brython.min.js"></script>
@@ -273,13 +284,13 @@ function save() {
   </body>
   </html>`
     }
-    $('#htmlFile').val(htmlCode);
     $.ajax({
         type: 'POST',
         url: 'https://code.abaanshanid.repl.co/save',
-        data: htmlCode
+        data: code
     }).done(function(data) {
-        ;
+        console.log(data);
+        var id = data;
         var json = userData;
         json.file = data;
         json.fileName = $("#fileName").val();
@@ -302,6 +313,7 @@ function save() {
                 readOnly: false
             });
             document.querySelector("#saveBtn").onclick = update;
+            location.replace(`?${id}`)
         });
     });
 }
@@ -355,6 +367,8 @@ function getDocs(fileName) {
         htmlDoc.getElementsByTagName("script")[htmlDoc.getElementsByTagName("script").length - 1].remove();
         htmlDoc.getElementsByTagName("style")[htmlDoc.getElementsByTagName("style").length - 1].remove();
         html.setValue(htmlDoc.children[0].outerHTML);
+        html.trigger("anyString", 'editor.action.formatDocument');
+        js.trigger("anyString", 'editor.action.formatDocument');
     })
 }
 
@@ -363,17 +377,18 @@ function update() {
     var htmlCode = html.getValue();
     var cssCode = css.getValue();
     var jsCode = js.getValue();
+    var code;
     if (lang != "python") {
-        htmlCode += `
-  <style>${cssCode}</style><script defer>${jsCode}</script>
+        code = `${htmlCode}<style>${cssCode}</style><script defer>${jsCode}</script>
   `;
     } else {
-        htmlCode = `<html>
+        code = `<html>
   <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.1/brython.min.js"></script>
 </head>
 <body onload="brython()">
+  ${htmlCode}
   <style>${cssCode}</style>
   <script defer  type="text/python">${jsCode}</script>
   ${htmlCode}
@@ -383,7 +398,7 @@ function update() {
     $.ajax({
         type: 'POST',
         url: 'https://code.abaanshanid.repl.co/update',
-        data: htmlCode
+        data: code
     }).done(function(data) {
         M.toast({
             html: '<span>Updated</span><button style="color:white !important" onclick="M.Toast.dismissAll();" class="btn-flat toast-action">  <i class="material-icons">close</i></button>',
@@ -392,6 +407,7 @@ function update() {
         document.querySelector("#saveBtn").classList.add("disabled");
         $("#saveBtn").html("Update");
         document.querySelector("#saveBtn").onclick = update;
+        updateName();
         html.updateOptions({
             readOnly: false
         });
@@ -611,3 +627,51 @@ function toggleBrython() {
     monaco.editor.setModelLanguage(model, "javascript");
 }
 
+function updateName() {
+  var usrData = json;
+  usrData.file = file;
+  usrData.data = $("#fileName").val();
+  $.get("https://code.abaanshanid.repl.co/updateName",usrData,function(data){
+    console.log("Done")
+  })
+}
+function togglebBackup(){
+     if (backupEnabled) {
+        backupEnabled = false;
+        localStorage.setItem("backupEnabled", "false");
+        return
+    }
+    backupEnabled = true;
+    localStorage.setItem("backupEnabled", "true"); 
+}
+
+function importCdpn(){
+  var doc;
+  var url =$("#cdpnUrl").val();
+  url = url.replace("codepen","cdpn");
+  url = url.replace("pen","fullembedgrid");
+  console.log(url)
+  $.get("https://html-cors.abaanshanid.repl.co/?url="+url,function(data){
+    var text, parser;
+   text = data.replaceAll("&quot;",'"');
+    parser = new DOMParser();
+    doc = parser.parseFromString(text,"text/html");
+    console.log(doc.getElementById("result").textContent);
+     var text, parser;
+   text = data.replaceAll("&quot;",'"');
+    parser = new DOMParser();
+     doc = parser.parseFromString(doc.getElementById("result").innerHTML,"text/html");
+     if(doc.getElementById("rendered-js")){
+     js.setValue(doc.getElementById("rendered-js").innerHTML);
+     }else{
+       js.setValue("//No Js in pen.");
+     }
+     if(doc.getElementsByTagName("div")[0]){
+     html.setValue(doc.getElementsByTagName("div")[0].innerHTML);
+     }else{
+       html.setValue(doc.body.innerHTML);
+     }  
+     css.setValue(doc.getElementsByTagName("style")[0].innerHTML);
+     M.toast({html: '<span>Pen imported</span> <button style="color:white !important" onclick="M.Toast.dismissAll();" class="btn-flat toast-action">  <i class="material-icons">close</i></button>', displayLength: 1000})
+  })
+}

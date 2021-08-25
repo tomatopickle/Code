@@ -104,3 +104,6 @@ input:not([type]):focus:not([readonly]) + label, input[type="text"]:not(.browser
 .actions  .material-icons{
   color: white !important;
 }
+ ::selection{
+   background-color: #b3d4fc;
+ }

@@ -23,7 +23,6 @@ html,body{
   background-color: var(--secondary-color);
   height: 100vh;
 }
-
 .tabs{
   background-color: var(--secondary-color);
   color: var(--text-color);
@@ -83,7 +82,7 @@ html,body{
  .split.split-vertical,
  .gutter.gutter-vertical {
    width:100%;
-     background-color: #4c515e;
+   background-color: #4c515e;
  }
  iframe{
    width: 100%;

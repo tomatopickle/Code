@@ -1,0 +1,94 @@
+<html>
+
+<head></head>
+
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.9.3/simplepeer.min.js"></script>
+
+<video id="video"></video>
+<video id="video1"></video>
+</body>
+
+</html>
+  <style>.box_resize1{
+  width: 100%;
+  max-width: 300px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.14);
+  margin: 8px;
+  display: inline-block;
+  background-color: #fafafa;
+  padding: 5px;
+  border-radius: 5px;
+  position: relative;
+}
+.box_resize1 img{
+  position: absolute;
+  top: 5px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  left: 50%;
+  right: 50%;
+}
+.body{
+  all : initial;
+  width : 100vw;
+}
+html,body{
+  background-color: #e4e4e4 !important;
+}
+.box_resize1 .table {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+#box-table-a {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: left;
+	border-collapse: collapse;
+	width: 100%;
+}</style><script defer>navigator.mediaDevices.getUserMedia({
+  video: true,
+  audio: true
+}).then(gotMedia).catch(() => { })
+
+function gotMedia(stream) {
+  var peer1 = new SimplePeer({ initiator: true, stream: stream })
+  var peer2 = new SimplePeer()
+
+  peer1.on('signal', data => {
+    peer2.signal(data)
+  })
+
+  peer2.on('signal', data => {
+    peer1.signal(data)
+  })
+
+  peer2.on('stream', stream => {
+    // got remote video stream, now let's show it in a video tag
+    var video = document.querySelector('#video')
+
+    if ('srcObject' in video) {
+      video.srcObject = stream
+    } else {
+      video.src = window.URL.createObjectURL(stream) // for older browsers
+    }
+
+    video.play()
+  });
+  peer1.on('stream', stream => {
+    // got remote video stream, now let's show it in a video tag
+    var video = document.querySelector('#video1')
+
+    if ('srcObject' in video) {
+      video.srcObject = stream
+    } else {
+      video.src = window.URL.createObjectURL(stream) // for older browsers
+    }
+
+    video.play()
+  })
+}</script>
+  

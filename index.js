@@ -1,4 +1,6 @@
+// This code might be a little ineffective, I made this before I knew about Databases.
 var express = require('express');
+require("nativefier");
 const cookieParser = require("cookie-parser");
 var fs = require('fs');
 var app = express();
@@ -6,7 +8,7 @@ var randomString = require('random-string');
 //setting middleware
 
 //Serves resources from public folder
-app.listen(5000);
+app.listen(process.env.PORT||5000);
 
 app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
@@ -152,6 +154,26 @@ app.get("/delete", function(req, res) {
     fs.writeFile(__dirname + "/accData.json", JSON.stringify(accData), function(err) {
       if (err) return console.log(err);
       res.end("Deleted");
+    });
+  });
+app.get("/updateName", function(req, res) {
+    var accData = require(__dirname + "/accData.json");
+    var q = req.query;
+    var accThere = false;
+    accData.forEach(function(item, i) {
+        if (item.email == q.email) {
+            item.files.forEach(function(data,index){
+            if(q.file == data.file){
+               data.fileName = q.data;
+               console.log(data)
+              accThere = true;        
+            }
+            })
+        }
+    });
+    fs.writeFile(__dirname + "/accData.json", JSON.stringify(accData), function(err) {
+      if (err) return console.log(err);
+      res.end("200");
     });
   });
 app.get("/star", function(req, res) {

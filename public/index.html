@@ -30,9 +30,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.21.2/min/vs/editor/editor.main.nls.js">
 
 	</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.21.2/min/vs/editor/editor.main.js">
-
-	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.21.2/min/vs/editor/editor.main.js"></script>
+  <script src="/emmet.js"></script>
 	<script src="script.js" defer>
 
 	</script>
@@ -44,10 +43,11 @@
 	<nav class="nav-extended">
 		<div class="nav-wrapper">
 			<div style="width:25%;margin-left:5px" class="input-field left">
-				<input id="fileName" type="text" class="validate" placeholder="Untitled">
+				<input oninput="document.querySelector('#saveBtn').classList.remove('disabled');" id="fileName" type="text" class="validate" placeholder="Untitled">
          <label for="fileName">Title</label>
       </div>
       <div   class="right">
+        <a class="waves-effect waves-light black btn modal-trigger" href="#importCodepen">Import from Codepen</a>
         <a class="waves-effect waves-light blue btn modal-trigger" href="#settings">Settings</a>
         <a class="waves-effect waves-light purple darken-3 btn modal-trigger" href="#libSearch">Add libraries</a>
        <button  onclick="save()" id="saveBtn" class="waves-effect disabled  waves-light btn green accent-4 tooltipped" data-position="bottom" data-tooltip="Login to save">Save</button>
@@ -66,7 +66,7 @@
                <li class="tab col s3"><a onclick="setTimeout(function(){css.focus()},500) "href="#css"><img class=" langLogo" src="/assets/css-dark.png">CSS</a></li>
             </ul>
          </div>
-         <div id="html" class="col s12">
+         <div data-languages="html" data-language="html" language="html" languages="html" id="html" class="col s12">
             <div oninput="editorInpt()" class="editor" id="htmlEditor">
             </div>
          </div>
@@ -74,7 +74,7 @@
             <div oninput="editorInpt()" class="editor" id="jsEditor">
             </div>
          </div>
-         <div id="css" class="col s12">
+         <div data-languages="css" data-language="css" language="css" languages="css" id="css" class="col s12">
             <div oninput="editorInpt()"  class="editor" id="cssEditor">
             </div>
          </div>
@@ -97,7 +97,7 @@
     </div>
   </div>
   </div>
-  <div id="libSearch" class="modal">
+  <div id="libSearch" class="modal modal-fixed-footer">
     <div class="modal-content">
         <h4>Add libraries</h4>
         <div class="input-field col s6">
@@ -111,7 +111,7 @@
         <a href="#!" class="modal-close waves-effect waves-light btn green">Done</a>
     </div>
 </div>
-  <div id="settings" class="modal">
+  <div id="settings" class="modal modal-fixed-footer">
     <div class="modal-content">
         <h4>Settings</h4>
             <ul class="collection">
@@ -154,6 +154,16 @@
         <input id="autoClearConsoleToggle" oninput="toggleAutoClearConsole()" type="checkbox">
         <span class="lever"></span> 
      </label>
+     </div>
+     </li>
+     <li class="collection-item">
+        <span class="tooltipped" data-position="top" data-tooltip="If you close the editor it recovers your previous code">Disable code backup</span>
+     <div class="switch right">
+     <label>   
+        <input id="backupToggle" oninput="togglebBackup()" type="checkbox">
+        <span class="lever"></span> 
+     </label>
+     </div>
      </li>
       <li class="collection-item">
         <span>Font size (pixels)</span>
@@ -169,5 +179,21 @@
         <a  class="modal-close waves-effect waves-light btn-flat" style="color:var(--text-color)">Close</a>
     </div>
 </div>
+  <div id="importCodepen" class="modal">
+    <div class="modal-content">
+      <h4>Import from Codepen</h4>    
+      <h6 style="font-size:15px">Enter a codepen URL (Full page view, example: https://codepen.io/moso/pen/MxLwbE)</h6>
+      <br>      
+      <div class="input-field col s6">
+          <input id="cdpnUrl" type="text" value="https://codepen.io/" class="validate">
+          <label for="cdpnUrl">Codepen URL</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect waves-light btn-flat" style="color: var(--text-color);">Cancel</a>
+      <button onclick="importCdpn()" class="modal-close waves-effect waves-light btn blue" style="color: var(--text-color);">Import</button>
+    </div>
+  </div>
+          
    </body>
 </html>
